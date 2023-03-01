@@ -6,7 +6,7 @@ const keys = require("./constants.js");
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
-  solidity: "0.8.17",
+  solidity: "0.8.9",
   networks: {
     goerli: {
       url: `https://eth-goerli.g.alchemy.com/v2/${keys.GOERLI_ALCHEMY_KEY}`,

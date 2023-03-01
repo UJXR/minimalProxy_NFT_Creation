@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     const ImplementationContract = await hre.ethers.getContractFactory(
-        "NFTImplementationContract"
+        "NFTContract"
     );
     // deploy the implementation contract
     const implementationContract = await ImplementationContract.deploy();
@@ -33,11 +33,11 @@ async function main() {
 
     // load the clone
     const proxy = await hre.ethers.getContractAt(
-        "NFTImplementationContract",
+        "NFTContract",
         ProxyAddress
     );
 
-    console.log("Proxy is initialized == ", await proxy.isInitialized()); // get initialized boolean == true
+    // console.log("Proxy is initialized == ", await proxy.isInitialized()); // get initialized boolean == true
 }
 
 main().catch((error) => {

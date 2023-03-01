@@ -4,7 +4,7 @@ async function main() {
 
     // load the clone
     const proxy = await hre.ethers.getContractAt(
-        "NFTImplementationContract",
+        "NFTContract",
         "0x56650E32f2E35C15EdBd9C0915557e7eE5b8cA1e"
     );
 

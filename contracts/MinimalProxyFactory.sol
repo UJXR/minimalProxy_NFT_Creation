@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "./NFTImplementationContract.sol";
+import "./NFTContract.sol";
 import "hardhat/console.sol";
 
 contract MinimalProxyFactory {
@@ -76,11 +76,14 @@ contract MinimalProxyFactory {
             proxy := create(0, clone, 0x37)
         }
 
-        console.log("Doing something here");
-
         // Call initialization
-        NFTImplementationContract(proxy).initialize();
-     
+        NFTContract(proxy).initialize(
+            "TestUJ",
+            "TUJ",
+            1000,
+            "https://www.google.com/search?q=google+images&rlz=1C5CHFA_enIN1037IN1037&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiI8qLSu7r9AhVe-DgGHV2QDUEQ_AUoAXoECAEQAw&biw=1440&bih=719&dpr=2#imgrc=1VQz4qfBZ3knDM"
+        );
+
         proxies.push(proxy);
 
         return proxy;
