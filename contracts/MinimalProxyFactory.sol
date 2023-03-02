@@ -7,13 +7,17 @@ import "hardhat/console.sol";
 contract MinimalProxyFactory {
     address[] public proxies;
 
-    function deployClone(address _implementationContract)
-        external
-        returns (address)
-    {
-        console.log("Deploying a proxy");
-        console.log(_implementationContract);
+    function deployClone(
+        address _implementationContract,
+        string memory _name,
+        string memory _symbol,
+        uint256 _amount,
+        string memory _baseURI,
+        string memory _nftSlug
+    ) external returns (address) {
 
+        require(!proxies[_airdropSlug], "Airdrop already with the same name, use different identifier")
+       
         // convert the address to 20 bytes
         bytes20 implementationContractInBytes = bytes20(
             _implementationContract
@@ -77,22 +81,20 @@ contract MinimalProxyFactory {
         }
 
         // Call initialization
-        NFTContract(proxy).initialize(
-            "TestUJ",
-            "TUJ",
-            1000,
-            "https://www.google.com/search?q=google+images&rlz=1C5CHFA_enIN1037IN1037&source=lnms&tbm=isch&sa=X&ved=2ahUKEwiI8qLSu7r9AhVe-DgGHV2QDUEQ_AUoAXoECAEQAw&biw=1440&bih=719&dpr=2#imgrc=1VQz4qfBZ3knDM"
-        );
+        NFTContract(proxy).initialize(_name, _symbol, _amount, _baseURI);
 
-        proxies.push(proxy);
+        proxies[_nftSlug] = proxy;
 
         return proxy;
     }
 
-    function getProxies(uint256 index) public view returns (address) {
-        // return (proxies.length);
-        console.log("Fetching the proxies here");
-        console.log(proxies[index]);
-        return proxies[index];
+    function getProxies(string memory _nftSlug)
+        public
+        view
+        returns (address)
+    {
+        require(proxies[_nftSlug], "No airdrop exists with this name")
+
+        return proxies[_nftSlug];
     }
 }
