@@ -2,14 +2,23 @@ const hre = require("hardhat");
 
 async function main() {
 
-    // load the clone
-    const proxy = await hre.ethers.getContractAt(
+
+    const proxy1 = await hre.ethers.getContractAt(
         "NFTContract",
-        "0x56650E32f2E35C15EdBd9C0915557e7eE5b8cA1e"
+        "0xe31FBBA27Ad67A064412D3e95d5Fd42FcdBf3354"
     );
 
-    console.log("Proxy is initialized == ", await proxy.isInitialized()); // get initialized boolean == true
-    console.log("Proxy name is == ", await proxy.name()); // get initialized boolean == true
+    const proxy2 = await hre.ethers.getContractAt(
+        "NFTContract",
+        "0x6dcB831E66C16CA629d95f62b17a1140Cda51200"
+    );
+
+    console.log("Proxy 1 total supply is  == ", await proxy1.totalSupply());
+    console.log("Proxy 2 total supply is == ", await proxy2.totalSupply());
+
+
+
+
 }
 
 main().catch((error) => {

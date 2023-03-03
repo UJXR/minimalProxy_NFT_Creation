@@ -5,19 +5,20 @@ import "./NFTContract.sol";
 import "hardhat/console.sol";
 
 contract MinimalProxyFactory {
-    address[] public proxies;
+    mapping(string => address) proxies;
 
     function deployClone(
         address _implementationContract,
         string memory _name,
         string memory _symbol,
-        uint256 _amount,
         string memory _baseURI,
         string memory _nftSlug
     ) external returns (address) {
+        require(
+            proxies[_nftSlug] == 0x0000000000000000000000000000000000000000,
+            "Airdrop already with the same name, use different identifier"
+        );
 
-        require(!proxies[_airdropSlug], "Airdrop already with the same name, use different identifier")
-       
         // convert the address to 20 bytes
         bytes20 implementationContractInBytes = bytes20(
             _implementationContract
@@ -81,19 +82,18 @@ contract MinimalProxyFactory {
         }
 
         // Call initialization
-        NFTContract(proxy).initialize(_name, _symbol, _amount, _baseURI);
+        NFTContract(proxy).initialize(_name, _symbol, _baseURI);
 
         proxies[_nftSlug] = proxy;
 
         return proxy;
     }
 
-    function getProxies(string memory _nftSlug)
-        public
-        view
-        returns (address)
-    {
-        require(proxies[_nftSlug], "No airdrop exists with this name")
+    function getProxies(string memory _nftSlug) public view returns (address) {
+        require(
+            proxies[_nftSlug] != 0x0000000000000000000000000000000000000000,
+            "No airdrop exists with this name"
+        );
 
         return proxies[_nftSlug];
     }

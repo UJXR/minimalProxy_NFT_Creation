@@ -19,25 +19,62 @@ async function main() {
 
     console.log("Minimal proxy factory contract ", minimalProxyFactory.address);
 
+
     // call the deploy clone function on the minimal factory contract and pass parameters
     const deployCloneContract = await minimalProxyFactory.deployClone(
-        implementationContract.address
+        implementationContract.address, "UJTEST1", "UJ1", "https://www.google.com/search?q=google+images&rlz=1C5CHFA_enIN1037IN1037&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjvsqf8rb39AhUwxDgGHeX8DykQ_AUoAXoECAEQAw&biw=1440&bih=820&dpr=2#imgrc=z3cK42rFNryY7M", "INTRACT_UJ1"
+    );
+
+    const deployCloneContract2 = await minimalProxyFactory.deployClone(
+        implementationContract.address, "UJTEST2", "UJ2", "https://www.google.com/search?q=google+images&rlz=1C5CHFA_enIN1037IN1037&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjvsqf8rb39AhUwxDgGHeX8DykQ_AUoAXoECAEQAw&biw=1440&bih=820&dpr=2#imgrc=z3cK42rFNryY7M", "INTRACT_UJ2"
     );
 
     await deployCloneContract.wait();
+    await deployCloneContract2.wait();
+
 
     // get deployed proxy address
-    var ProxyAddress = await minimalProxyFactory.getProxies("0");
+    var ProxyAddress1 = await minimalProxyFactory.getProxies("INTRACT_UJ1");
+    var ProxyAddress2 = await minimalProxyFactory.getProxies("INTRACT_UJ2");
 
-    console.log("Proxy contract ", ProxyAddress);
+
+    console.log("Proxy contract 1 ", ProxyAddress1);
+    console.log("Proxy contract 2", ProxyAddress2);
+
 
     // load the clone
-    const proxy = await hre.ethers.getContractAt(
+    const proxy1 = await hre.ethers.getContractAt(
         "NFTContract",
-        ProxyAddress
+        ProxyAddress1
     );
 
-    // console.log("Proxy is initialized == ", await proxy.isInitialized()); // get initialized boolean == true
+    const proxy2 = await hre.ethers.getContractAt(
+        "NFTContract",
+        ProxyAddress2
+    );
+
+    console.log("Proxy 1 is initialized == ", await proxy1.isInitialized());
+    console.log("Proxy 2 is initialized == ", await proxy2.isInitialized());
+
+    console.log("Proxy 1 name is  == ", await proxy1.name());
+    console.log("Proxy 2 name is == ", await proxy2.name());
+
+    console.log("Proxy 1 symbol is  == ", await proxy1.symbol());
+    console.log("Proxy 2 symbol is == ", await proxy2.symbol());
+
+    await proxy1.mintNFT();
+    await proxy1.mintNFT();
+    await proxy1.mintNFT();
+    await proxy1.mintNFT();
+
+
+    await proxy2.mintNFT();
+    await proxy2.mintNFT();
+
+    console.log("Proxy 1 total supply is  == ", await proxy1.totalSupply());
+    console.log("Proxy 2 total supply is == ", await proxy2.totalSupply());
+
+
 }
 
 main().catch((error) => {
