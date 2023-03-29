@@ -17,8 +17,6 @@ async function main() {
     console.log("Proxy 2 total supply is == ", await proxy2.totalSupply());
 
 
-
-
 }
 
 main().catch((error) => {
